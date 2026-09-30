@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.widget.Toast;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -35,13 +36,22 @@ public class MainActivity extends BridgeActivity {
         "var id='__vayom_fs_override__';" +
         "if(!document.getElementById(id)){" +
         "var s=document.createElement('style');s.id=id;" +
-        "s.textContent=':root,html,body,#root,main{margin:0!important;padding:0!important;padding-top:0!important;padding-bottom:0!important;width:100%!important;min-height:100vh!important;min-height:100dvh!important;box-sizing:border-box!important;}'+" +
+        "s.textContent=':root,html,body{margin:0!important;padding:0!important;padding-top:0!important;padding-bottom:0!important;width:100%!important;min-height:100vh!important;min-height:100dvh!important;box-sizing:border-box!important;overflow-x:hidden!important;overflow-y:auto!important;}'+" +
+        "'#root,main{width:100%!important;min-height:100%!important;}'+" +
         "'body{background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;}'+" +
-        "'div[style*=\"login-bg\"],[class*=\"min-h-screen\"],main{min-height:100vh!important;min-height:100dvh!important;width:100%!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;object-fit:cover!important;}';" +
+        "'div[style*=\"login-bg\"],[class*=\"min-h-screen\"]{min-height:100vh!important;min-height:100dvh!important;width:100%!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;object-fit:cover!important;}';" +
         "if(document.head)document.head.appendChild(s);else if(document.documentElement)document.documentElement.appendChild(s);" +
         "}" +
         "}" +
         "applyFs();" +
+        "if(!window.__fsListenerAttached){" +
+        "window.__fsListenerAttached=true;" +
+        "window.addEventListener('focusin',function(e){" +
+        "if(e.target&&(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.isContentEditable)){" +
+        "setTimeout(function(){try{e.target.scrollIntoView({behavior:'smooth',block:'center'});}catch(err){e.target.scrollIntoView(false);}},300);" +
+        "}" +
+        "},true);" +
+        "}" +
         "if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',applyFs);}" +
         "window.addEventListener('load',applyFs);" +
         "})();";
@@ -118,9 +128,11 @@ public class MainActivity extends BridgeActivity {
         Window window = getWindow();
         View decorView = window.getDecorView();
 
-        ViewCompat.setOnApplyWindowInsetsListener(decorView, (v, insets) -> {
-            v.setPadding(0, 0, 0, 0);
-            return WindowInsetsCompat.CONSUMED;
+        ViewCompat.setOnApplyWindowInsetsListener(decorView, (v, windowInsets) -> {
+            Insets imeInsets = windowInsets.getInsets(WindowInsetsCompat.Type.ime());
+            // Adjust bottom padding for soft keyboard so inputs are not covered
+            v.setPadding(0, 0, 0, imeInsets.bottom);
+            return windowInsets;
         });
 
         WebView webView = this.bridge != null ? this.bridge.getWebView() : null;
