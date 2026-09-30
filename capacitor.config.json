@@ -1,0 +1,17 @@
+{
+  "appId": "com.carawintech.vayom",
+  "appName": "VAYOM",
+  "webDir": "dist",
+  "backgroundColor": "#040d22",
+  "server": {
+    "androidScheme": "https",
+    "allowNavigation": ["vayom.carawintech.com"]
+  },
+  "plugins": {
+    "StatusBar": {
+      "overlaysWebView": true,
+      "style": "DARK",
+      "backgroundColor": "#00000000"
+    }
+  }
+}

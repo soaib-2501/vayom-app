@@ -1,0 +1,17 @@
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Android build outputs and cache
+.gradle/
+build/
+android/build/
+android/app/build/
+android/.gradle/
+android/.idea/
+android/local.properties
+android/captures/
+*.apk
+*.aab
+*.keystore
+*.jks

@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">VAYOM</string>
+    <string name="title_activity_main">VAYOM</string>
+    <string name="package_name">com.carawintech.vayom</string>
+    <string name="custom_url_scheme">com.carawintech.vayom</string>
+</resources>
